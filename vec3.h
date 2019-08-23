@@ -8,6 +8,7 @@ class Vec3{
 		Vec3();
 		Vec3(int , int, int);
 		Vec3 get();
+		void set(int, int, int);
 		int getx();
 		int gety();
 		int getz();

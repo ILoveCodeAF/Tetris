@@ -1,64 +1,82 @@
 #include "queue.h"
+#include <stdexcept>
+//#define NULL (void*)0
 
 template <class T>
-Queue::Queue(int size)
+Queue<T>::Queue(int size)
 {
-	this->front = 0;
-	this->back = 1;
+	this->_front = 0;
+	this->_back = 1;
 	this->max_size = size;
-	this->size = 0;
+	this->_size = 0;
 	this->buffer = new T[this->max_size+2];
 }
 
 template <class T>
-void Queue::free()
+void Queue<T>::free()
 {
-	if(q->buffer != NULL)
-		free(q->buffer);
+	if(this->buffer != NULL)
+		delete(this->buffer);
 }
 
 template <class T>
-bool Queue::empty()
+bool Queue<T>::empty()
 {
-	return this->size == 0;
+	return this->_size == 0;
 }
 
 template <class T>
-bool Queue::full()
+bool Queue<T>::full()
 {
-	return this->size == q->max_size;
+	return this->_size == this->max_size;
 }
 
 template <class T>
-void Queue::push(T value)
+void Queue<T>::push(T value)
 {
 	if(!this->full()){
-		if(this->back == this->max_size+2){
-			this->back = 0;
+		if(this->_back == this->max_size+2){
+			this->_back = 0;
 		}
-		this->buffer[this->back] = value;
-		this->back += 1;
-		this->size += 1;
+		this->buffer[this->_back] = value;
+		this->_back += 1;
+		this->_size += 1;
 	}
+	else
+		throw "Queue<>::push(): queue is full";
 }
 
 template <class T>
-T queue_pop()
+T Queue<T>::front()
+{
+	if(this->empty())
+		throw "Queue<>::front(): queue is empty";
+	if(this->_front == this->max_size+1)
+		return this->buffer[0];
+	return this->buffer[this->_front+1];
+}
+
+template <class T>
+void Queue<T>::pop()
 {
 	if(!this->empty()){
-		if(this->front == this->max_size+1){
-			this->front = 0;
+		if(this->_front == this->max_size+1){
+			this->_front = 0;
 		}
 		else
-			this->front += 1;
-		this->size -= 1;
-		return this->buffer[this->front];
+			this->_front += 1;
+		this->_size -= 1;
 	}
-	return NULL;
+	else
+		throw "Queue<>::pop(): queue is empty";
 }
 
 template <class T>
-int Queue::size()
+int Queue<T>::size()
 {
-	return this->size;
+	return this->_size;
 }
+
+
+//explicit instantiations
+template class Queue<int>;
