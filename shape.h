@@ -23,6 +23,7 @@ class Shape{
 		int get_height();
 		Vec3 get_color();
 		unsigned char* get_shape();
+		int get_num_state();
 		void change_state(int n);
 		int get_state(int n);
 		int get_current_state();

@@ -60,6 +60,10 @@ unsigned char* Shape::get_shape(){
 	return this->shapes[current_state];
 }
 
+int Shape::get_num_state(){
+	return this->num_state;
+}
+
 void Shape::change_state(int n){
 	this->current_state += n;
 	while(this->current_state < 0)

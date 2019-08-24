@@ -73,7 +73,59 @@ bool Handler::rotate(Control control){
 	if(this->shape.get_character() == 'O')
 		return false;
 	int row;
-	//tobe continue
+	int current_state = this->shape.get_current_state();
+	int delta;
+	if(control == Control::ROTATE_CLOCKWISE)
+		delta = 1;
+	else if(control == Control::ROTATE_ANTICLOCKWISE)
+		delta = -1;
+	switch(current_state){
+		case 0:
+			if(delta > 0)
+				row = 0;
+			else
+				row = 7;
+			break;
+		case 1:
+			if(delta > 0)
+				row = 2;
+			else
+				row = 1;
+			break;
+		case 2:
+			if(delta > 0)
+				row = 4;
+			else
+				row = 3;
+			break;
+		case 3:
+			if(delta > 0)
+				row = 6;
+			else
+				row = 5;
+			break;
+	}
+	pair* wk;
+	if(this->shape.get_character() == 'I'){
+		wk = this->wall_kick_i;
+	}
+	else{
+		wk = this->wall_kick;
+	}
+	this->shape.change_state(delta);
+	int i = 0;
+	while(i < this->wWall){
+		this->ypos += wk[row*this->wWall+i].first;
+		this->xpos += wk[row*this->wWall+i].second;
+		if(!this->has_collision())
+			break;
+		this->ypos -= wk[row*this->wWall+i].first;
+		this->xpos -= wk[row*this->wWall+i].second;
+		++i;
+	}
+	if(i == this->wWall)
+		return false;
+	return true;
 }
 
 bool Handler::move(Control control){
