@@ -18,6 +18,7 @@ public:
 	T front();
 	void pop();
 	int size();
+	T* get_queue();
 };
 
 #endif

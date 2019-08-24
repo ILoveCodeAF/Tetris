@@ -2,14 +2,27 @@
 #define __BOARD_H_INCLUDED__
 
 #include "vec3.h"
+#include "shape.h"
+
+struct Cell{
+	Vec3 color;
+	bool has_brick;
+	Cell();
+};
 
 class Board{
 	private:
-		Vec3 board[20][10];
-	public:
+		int height;
+		int width;
+		Cell* board;
+   	public:
 		Board();
-		Vec3** getBoard();
-
+		~Board();
+		Cell* get_board();
+		int get_height();
+		int get_width();
+		void add(Shape shape, int xpos, int ypos);
+		void print();
 };
 
 #endif

@@ -77,6 +77,34 @@ int Queue<T>::size()
 	return this->_size;
 }
 
+template <class T>
+T* Queue<T>::get_queue()
+{
+	int n = this->_size;
+	if(n == 0)
+		return NULL;
+//T* temp = new T[n];
+//int i = 0;
+//while(i < n){
+//	temp[i] = this->front();
+//	this->pop();
+//	this->push(temp[i]);
+//	++i;
+//}
+	int i = this->_front+1;
+	int j = 0;
+	T* temp = new T[n];
+	while(j < n){
+		if(i == this->max_size+2)
+			i = 0;
+		temp[j] = this->buffer[i];
+		++i;
+		++j;
+	}
+	return temp;
+}
 
 //explicit instantiations
 template class Queue<int>;
+#include "shape.h"
+template class Queue<Shape>;

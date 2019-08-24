@@ -1,4 +1,4 @@
-#include "Vec3.h"
+#include "vec3.h"
 
 Vec3::Vec3(){
 	this->x = this->y = this->z = 0;
@@ -9,6 +9,8 @@ Vec3::Vec3(int x, int y, int z){
 	this->y = y;
 	this->z = z;
 }
+
+Vec3::~Vec3(){}
 
 void Vec3::set(int x, int y, int z){
 	this->x = x;

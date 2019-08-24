@@ -7,6 +7,7 @@ class Vec3{
 	public:
 		Vec3();
 		Vec3(int , int, int);
+		~Vec3();
 		Vec3 get();
 		void set(int, int, int);
 		int getx();
