@@ -13,8 +13,8 @@ pair::pair(int f, int s){
 }
 
 Handler::Handler(){
-	this->xpos = 0;
-	this->ypos = this->board.get_width()/2-2;
+	this->ypos = 0;
+	this->xpos = this->board.get_width()/2-2;
 	this->shapes = Shape::load_shape("shapes.txt");
 	srand(time(NULL));
 	int random;
@@ -24,6 +24,7 @@ Handler::Handler(){
 		random = rand()%this->num_shape;
 		queue.push(shapes[random]);
 	}
+	this->is_holded = false;
 	int m, n;
 	std::ifstream infile;
 	infile.open("wall_kick.txt", std::ios::in);
@@ -67,6 +68,18 @@ Board Handler::get_board(){
 
 Shape* Handler::get_queue(){
 	return this->queue.get_queue();
+}
+
+int Handler::get_xpos(){
+	return this->xpos;
+}
+
+int Handler::get_ypos(){
+	return this->ypos;
+}
+
+int Handler::get_ylandedpos(){
+	return this->ylandedpos;
 }
 
 bool Handler::rotate(Control control){
@@ -166,4 +179,48 @@ bool Handler::has_collision(){
 		++i;
 	}
 	return false;
+}
+
+void Handler::hold(){
+	if(this->is_holded){
+		Shape shp = this->holded_shape;
+		this->holded_shape = this->shape;
+		this->shape = shp;
+		this->reset();
+		this->is_holded = false;
+	}
+}
+
+void Handler::spawn(){
+	this->shape = this->queue.front();
+	this->queue.pop();
+	srand(time(NULL));
+	int r = rand()%this->num_shape;
+	this->queue.push(this->shapes[r]);
+}
+
+void Handler::reset(){
+	tthis->ypos = 0;
+	this->xpos = this->board.get_width()/2-2;
+}
+
+bool Handler::land(){
+}
+
+void Handler::set_preview_landing_place(){
+	int i, j;
+	unsigned char* check = new unsigned char[this->shape.get_width()];
+	i = 0;
+	int height = 0;
+	while(i < this->shape.get_width()){
+		check[i] = -1;
+		++i;
+	}
+	i = this->shape.get_height()-1;
+	unsigned char* shape_arr = this->shape.get_shape();
+	while(i >=0 ){
+		j = 0;
+		while(j < this->shape.get_width()){
+			if(shape_arr[i*this->shape.get_width()+j]){
+
 }
