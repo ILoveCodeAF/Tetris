@@ -15,7 +15,7 @@ pair::pair(int f, int s){
 Handler::Handler(){
 	this->ypos = 0;
 	this->xpos = this->board.get_width()/2-2;
-	this->shapes = Shape::load_shape("shapes.txt");
+	this->shapes = Shape::load_shape("data/shapes.txt");
 	srand(time(NULL));
 	int random;
 	this->num_shape = 7;
@@ -27,7 +27,7 @@ Handler::Handler(){
 	this->is_holded = false;
 	int m, n;
 	std::ifstream infile;
-	infile.open("wall_kick.txt", std::ios::in);
+	infile.open("data/wall_kick.txt", std::ios::in);
 	infile>>n>>m;
 	int i = 0;
 	int j;
@@ -211,16 +211,27 @@ void Handler::set_preview_landing_place(){
 	int i, j;
 	unsigned char* check = new unsigned char[this->shape.get_width()];
 	i = 0;
-	int height = 0;
 	while(i < this->shape.get_width()){
-		check[i] = -1;
+		check[i] = 1;
 		++i;
 	}
 	i = this->shape.get_height()-1;
 	unsigned char* shape_arr = this->shape.get_shape();
-	while(i >=0 ){
+	while(i >= 0){
 		j = 0;
 		while(j < this->shape.get_width()){
-			if(shape_arr[i*this->shape.get_width()+j]){
-
+			if(check[j] == 1 && shape_arr[i*this->shape.get_width()+j])
+				check[j] = i+1-this->shape.get_height();
+			++j;
+		}
+		++i;
+	}
+	i = 0;
+	this->ylandedpos = 0;
+	while(i >= 0){
+		j = 0;
+		while(j < this->shape.get_width()){
+			
+		}
+	}
 }

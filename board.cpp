@@ -11,6 +11,7 @@ Board::Board(){
 	this->height = 22;
 	this->width = 10;
 	this->board = new Cell[this->height*this->width];
+	this->is_full = false;
 }
 
 Board::~Board(){}
@@ -30,6 +31,8 @@ int Board::get_height(){
 void Board::add(Shape shape, int xpos, int ypos){
 	int i = 0;
 	int j = 0;
+	if(ypos == 0)
+		this->is_full = true;
 	unsigned char* shape_arr = shape.get_shape();
 	Vec3 color = shape.get_color(); 
 	while(i < shape.get_height()){
@@ -62,4 +65,8 @@ void Board::print(){
 		++i;
 	}
 	std::cout<<"\n-----------------------\n";
+}
+
+bool Board::full(){
+	return this->is_full;
 }

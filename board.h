@@ -15,6 +15,7 @@ class Board{
 		int height;
 		int width;
 		Cell* board;
+		bool is_full;
    	public:
 		Board();
 		~Board();
@@ -23,6 +24,7 @@ class Board{
 		int get_width();
 		void add(Shape shape, int xpos, int ypos);
 		void print();
+		bool full();
 };
 
 #endif
