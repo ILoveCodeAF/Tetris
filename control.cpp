@@ -1,4 +1,4 @@
-#include "handler.h"
+#include "control.h"
 #include "board.h"
 #include "queue.h"
 #include <stdlib.h>
@@ -12,7 +12,9 @@ pair::pair(int f, int s){
 	this->second = s;
 }
 
-Handler::Handler(){
+Control::Control(){
+	srand(time(NULL));
+
 	this->ypos = 0;
 	this->xpos = this->board.get_width()/2-2;
 	this->shapes = Shape::load_shape("data/shapes.txt");
@@ -25,6 +27,7 @@ Handler::Handler(){
 		queue.push(shapes[random]);
 	}
 	this->is_holded = false;
+	this->holed_shape = NULL;
 	int m, n;
 	std::ifstream infile;
 	infile.open("data/wall_kick.txt", std::ios::in);
@@ -56,41 +59,41 @@ Handler::Handler(){
 	this->hWall = n;
 }
 
-Handler::~Handler(){}
+Control::~Control(){}
 
-Shape Handler::get_shape(){
+Shape Control::get_shape(){
 	return this->shape;
 }
 
-Board Handler::get_board(){
+Board Control::get_board(){
 	return this->board;
 }
 
-Shape* Handler::get_queue(){
+Shape* Control::get_queue(){
 	return this->queue.get_queue();
 }
 
-int Handler::get_xpos(){
+int Control::get_xpos(){
 	return this->xpos;
 }
 
-int Handler::get_ypos(){
+int Control::get_ypos(){
 	return this->ypos;
 }
 
-int Handler::get_ylandedpos(){
+int Control::get_ylandedpos(){
 	return this->ylandedpos;
 }
 
-bool Handler::rotate(Control control){
+bool Control::rotate(ControlKey control_key){
 	if(this->shape.get_character() == 'O')
 		return false;
 	int row;
 	int current_state = this->shape.get_current_state();
 	int delta;
-	if(control == Control::ROTATE_CLOCKWISE)
+	if(control_key == ControlKey::ROTATE_CLOCKWISE)
 		delta = 1;
-	else if(control == Control::ROTATE_ANTICLOCKWISE)
+	else if(control_key == ControlKey::ROTATE_ANTICLOCKWISE)
 		delta = -1;
 	switch(current_state){
 		case 0:
@@ -141,12 +144,12 @@ bool Handler::rotate(Control control){
 	return true;
 }
 
-bool Handler::move(Control control){
+bool Control::move(ControlKey control_key){
 	int delta = 0;
-	if(control == Control::LEFT){
+	if(control_key == ControlKey::LEFT){
 		delta = -1;
 	}
-	else if(control == Control::RIGHT){
+	else if(control_key == ControlKey::RIGHT){
 		delta = 1;
 	}
 	else
@@ -159,7 +162,7 @@ bool Handler::move(Control control){
 	return true;
 }
 
-bool Handler::has_collision(){
+bool Control::has_collision(){
 	Cell* cells = this->board.get_board();
 	unsigned char* shape_arr = this->shape.get_shape();
 	int i = 0;
@@ -181,33 +184,35 @@ bool Handler::has_collision(){
 	return false;
 }
 
-void Handler::hold(){
+void Control::hold(){
 	if(this->is_holded){
 		Shape shp = this->holded_shape;
 		this->holded_shape = this->shape;
 		this->shape = shp;
+		if(this->shape == NULL){
+			this.spawn();
+		}
 		this->reset();
 		this->is_holded = false;
 	}
 }
 
-void Handler::spawn(){
+void Control::spawn(){
 	this->shape = this->queue.front();
 	this->queue.pop();
-	srand(time(NULL));
 	int r = rand()%this->num_shape;
 	this->queue.push(this->shapes[r]);
 }
 
-void Handler::reset(){
+void Control::reset(){
 	tthis->ypos = 0;
 	this->xpos = this->board.get_width()/2-2;
 }
 
-bool Handler::land(){
+bool Control::land(){
 }
 
-void Handler::set_preview_landing_place(){
+void Control::set_preview_landing_place(){
 	int i, j;
 	unsigned char* check = new unsigned char[this->shape.get_width()];
 	i = 0;

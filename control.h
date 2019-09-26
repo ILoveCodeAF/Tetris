@@ -1,11 +1,11 @@
-#ifndef __HANDLER_H_INCLUDED__
-#define __HANDLER_H_INCLUDED__
+#ifndef __CONTROL_H_INCLUDED__
+#define __CONTROL_H_INCLUDED__
 
 #include "shape.h"
 #include "board.h"
 #include "queue.h"
 
-enum class Control{
+enum class ControlKey{
 	LEFT,
 	RIGHT,
 	ROTATE_CLOCKWISE, 
@@ -21,7 +21,7 @@ struct pair{
 	pair(int, int);
 };
 
-class Handler{
+class Control{
 	private:
 		Board board;
 		Shape shape;
@@ -40,16 +40,16 @@ class Handler{
 		int hWall;
 		int set_preview_landing_place()
 	public:
-		Handler();
-		~Handler();
+		Control();
+		~Control();
 		Shape get_shape();
 		Board get_board();
 		Shape* get_queue();
 		int get_xpos();
 		int get_ypos();
 		int get_ylandedpos();
-		bool rotate(Control);
-		bool move(Control);
+		bool rotate(ControlKey);
+		bool move(ControlKey);
 		bool has_collision();
 		void hold();
 		void spawn();
