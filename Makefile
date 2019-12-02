@@ -3,6 +3,10 @@ CC=gcc
 
 RM=rm -f
 
+SRC=$(shell ls
 
-all:
+
+all: tetris
+
+tetris:
 

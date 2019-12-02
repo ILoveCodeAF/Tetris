@@ -25,6 +25,7 @@ class Board{
 		void add(Shape shape, int xpos, int ypos);
 		void print();
 		bool full();
+		Cell get_cell(int i, int j);
 };
 
 #endif

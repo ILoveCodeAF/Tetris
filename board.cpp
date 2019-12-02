@@ -1,15 +1,20 @@
 #include "vec3.h"
 #include "shape.h"
 #include "board.h"
+#include "tetris.h"
+#include "config.h"
+
 #include <iostream>
+#include <exception>
+
 
 Cell::Cell(){
 	this->has_brick = 0;
 }
 
 Board::Board(){
-	this->height = 22;
-	this->width = 10;
+	this->height = BOARD_HEIGHT;
+	this->width = BOARD_WIDTH;
 	this->board = new Cell[this->height*this->width];
 	this->is_full = false;
 }
@@ -21,11 +26,11 @@ Cell* Board::get_board(){
 }
 
 int Board::get_width(){
-	return this->width();
+	return this->width;
 }
 
 int Board::get_height(){
-	return this->height();
+	return this->height;
 }
 
 void Board::add(Shape shape, int xpos, int ypos){
@@ -69,4 +74,11 @@ void Board::print(){
 
 bool Board::full(){
 	return this->is_full;
+}
+
+Cell Board::get_cell(int i, int j){
+	if(i < 0 || i >= this->height || j < 0 || j >= this->width){
+		throw "out of range: board.get_cell";
+	}
+	return this->board[i*this->width+j];
 }

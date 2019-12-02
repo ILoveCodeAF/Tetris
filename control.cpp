@@ -212,7 +212,7 @@ void Control::reset(){
 bool Control::land(){
 }
 
-void Control::set_preview_landing_place(){
+int Control::preview_landing_place(){
 	int i, j;
 	unsigned char* check = new unsigned char[this->shape.get_width()];
 	i = 0;
@@ -231,12 +231,13 @@ void Control::set_preview_landing_place(){
 		}
 		++i;
 	}
-	i = 0;
-	this->ylandedpos = 0;
+	i = ;
+	int ylandedpos = 0;
 	while(i >= 0){
 		j = 0;
 		while(j < this->shape.get_width()){
-			
+			//your code here
 		}
 	}
+	return ylandedpos; 
 }
