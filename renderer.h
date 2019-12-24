@@ -4,7 +4,7 @@
 #include "board.h"
 #include "shape.h"
 
-class Window{
+class Renderer{
 	private:
 		int window_width;
 		int window_height;
@@ -18,8 +18,8 @@ class Window{
 		void gotoxy(int x, int y);
 		void resize_event();
 	public:
-		Window();
-		~Window();
+		Renderer();
+		~Renderer();
 		void clear();
 		void draw(Board board, int x, int y);
 		void draw(Shape shape, int x, int y, bool shadow = false);

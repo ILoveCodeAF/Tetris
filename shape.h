@@ -12,11 +12,15 @@ class Shape{
 		Vec3 color;
 		int num_state;
 		int current_state;
+
+		Shape operator=(const Shape &&);
 		unsigned char* gen_shape(unsigned char* spawn_shape);
 		void print(int state);
 	public:
 		Shape();
 		Shape(char ch, unsigned char* spawn_shape, int w, int h, Vec3 col, int num_state);
+		Shape(const Shape &) = default;
+		Shape& operator=(const Shape &) = default;
 		~Shape();
 		char get_character();
 		int get_width();

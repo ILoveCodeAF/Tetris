@@ -40,6 +40,7 @@ void Board::add(Shape shape, int xpos, int ypos){
 		this->is_full = true;
 	unsigned char* shape_arr = shape.get_shape();
 	Vec3 color = shape.get_color(); 
+	std::cout<<"------------------\n";
 	while(i < shape.get_height()){
 		j = 0;
 		while(j < shape.get_width()){

@@ -20,7 +20,9 @@ Shape::Shape(char ch, unsigned char* spawn_shape, int w, int h, Vec3 col, int nu
 	}
 }
 
-Shape::~Shape(){}
+Shape::~Shape(){
+	delete[] this->shapes;
+}
 
 unsigned char* Shape::gen_shape(unsigned char* spawn_shape){
 	if(this->width != this->height || this->num_state < 2)

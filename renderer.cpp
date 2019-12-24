@@ -3,7 +3,7 @@
 #include <signal.h>
 #include <sys/ioctl.h>
 
-Window::Window(){
+Renderer::Renderer(){
 	winsize ws;
 	ioctl(fileno(stdout), TIOCGWINSZ, &ws);
 	this->window_width = ws.ws_col;
@@ -38,7 +38,7 @@ Window::Window(){
 	this->bottom_border[2] = 0x94;
 }
 
-Window::~Window(){
+Renderer::~Renderer(){
 	if(this->light_shape != NULL){
 		delete[] this->light_shape;
 	}
@@ -59,18 +59,18 @@ Window::~Window(){
 	}
 }
 
-void Window::resize_event(){
+void Renderer::resize_event(){
 	winsize ws;
 	ioctl(fileno(stdout), TIOCGWINSZ, &ws);
 	this->window_width = ws.ws_col;
 	this->window_height = ws.ws_row;
 }
 
-void Window::gotoxy(int x, int y){
+void Renderer::gotoxy(int x, int y){
 	printf("%c[%d;%df", 0x1B, y, x);
 }
 
-void Window::clear(){
+void Renderer::clear(){
 	int i = 0;
 	int j;
 
@@ -85,7 +85,7 @@ void Window::clear(){
 	}
 }
 
-void Window::draw(Board board, int x, int y){
+void Renderer::draw(Board board, int x, int y){
 	int i = 2;
 	int j = 0;
 	Cell cell;
