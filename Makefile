@@ -10,15 +10,12 @@ DEP_DIR:=.deps
 OBJ_DIR:=.obj
 
 SRCS:=$(wildcard $(SRC_DIR)/*.cpp)
-#OBJS:=$($(SRCS):$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
-#DEPS:=$($(SRCS):$(SRC_DIR)/%.cpp=$(DEP_DIR)/%.d)
 OBJS:=$(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o,$(SRCS))
 DEPS:=$(patsubst $(SRC_DIR)/%.cpp,$(DEP_DIR)/%.d,$(SRCS))
 
 CFLAGS:= -Wall -I$(INCLUDE_DIR)
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEP_DIR)/$*.Td
 POSTCOMPILE = mv -f $(DEP_DIR)/$*.Td $(DEP_DIR)/$*.d
-#-MT -@ && touch $@
 
 
 TARGET:=tetris
