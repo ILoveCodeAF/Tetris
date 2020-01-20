@@ -11,7 +11,7 @@ OBJ_DIR := .obj
 
 SRCS := $(wildcard $(SRC_DIR)/*.cpp)
 OBJS := $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o,$(SRCS))
-DEPS := $(patsubst $(SRC_DIR)/%.cpp,$(DEP_DIR)/%.d,$(SRCS))
+DEPS := $(patsubst $(SRC_DIR)/%.cpp, $(DEP_DIR)/%.d,$(SRCS))
 
 CFLAGS := -Wall -I$(INCLUDE_DIR)
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEP_DIR)/$*.Td
@@ -45,6 +45,7 @@ $(DEPS):
 
 clean:
 	$(RM) $(OBJS)
+	$(RM) $(DEPS)
 
 distclean: clean
 	$(RM) $(TARGET)
