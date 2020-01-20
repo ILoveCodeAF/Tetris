@@ -1,6 +1,4 @@
 #include "vec3.h"
-#include "shape.h"
-#include "board.h"
 #include "tetris.h"
 #include "config.h"
 

@@ -1,10 +1,10 @@
-#include "shape.h"
+#include "tetrimino.h"
 #include <iostream>
 #include <fstream>
 
-Shape::Shape(){}
+Tetrimino::Tetrimino(){}
 
-Shape::Shape(char ch, unsigned char **states, int w, int h, Vec4 col, int num_state){
+Tetrimino::Tetrimino(char ch, unsigned char **states, int w, int h, Vec4 col, int num_state){
 	this->character = ch;
 	this->states = states;
 	this->width = w;
@@ -14,33 +14,33 @@ Shape::Shape(char ch, unsigned char **states, int w, int h, Vec4 col, int num_st
 	this->current_state = 0;
 }
 
-Shape& Shape::operator=(const Shape &shape){
-	if (this == &shape)
+Tetrimino& Tetrimino::operator=(const Tetrimino &tetrimino){
+	if (this == &tetrimino)
 		return *this;
-	this->character = shape.get_character();
-	this->states = shape.get_states();
-	this->width = shape.get_width();
-	this->height = shape.get_height();
-	this->color = shape.get_color();
-	this->num_state = shape.get_num_state();
-	this->current_state = shape.get_current_state();
+	this->character = tetrimino.get_character();
+	this->states = tetrimino.get_states();
+	this->width = tetrimino.get_width();
+	this->height = tetrimino.get_height();
+	this->color = tetrimino.get_color();
+	this->num_state = tetrimino.get_num_state();
+	this->current_state = tetrimino.get_current_state();
 	return *this;
 }
 
-Shape& Shape::operator=(const Shape &&shape){
-	if (this == &shape)
+Tetrimino& Tetrimino::operator=(const Tetrimino &&tetrimino){
+	if (this == &tetrimino)
 		return *this;
-	this->character = shape.get_character();
-	this->states = shape.get_states();
-	this->width = shape.get_width();
-	this->height = shape.get_height();
-	this->color = shape.get_color();
-	this->num_state = shape.get_num_state();
-	this->current_state = shape.get_current_state();
+	this->character = tetrimino.get_character();
+	this->states = tetrimino.get_states();
+	this->width = tetrimino.get_width();
+	this->height = tetrimino.get_height();
+	this->color = tetrimino.get_color();
+	this->num_state = tetrimino.get_num_state();
+	this->current_state = tetrimino.get_current_state();
 	return *this;
 }
 
-Shape::~Shape(){
+Tetrimino::~Tetrimino(){
 	if(this->states != NULL){
 		for(int i = this->num_state-1; i > 0; ++i){
 			if (this->states[i] != NULL)
@@ -50,53 +50,53 @@ Shape::~Shape(){
 	}
 }
 
-void Shape::free(){
+void Tetrimino::free(){
 	this->character = ' ';
 	this->states = NULL;
 	this->width = this->height = 0;
 	this->num_state = this->current_state = 0;
 }
 
-char Shape::get_character() const{
+char Tetrimino::get_character() const{
 	return this->character;
 }
 
-int Shape::get_width() const{
+int Tetrimino::get_width() const{
 	return this->width;
 }
 
-int Shape::get_height() const{
+int Tetrimino::get_height() const{
 	return this->height;
 }
 
-Vec4 Shape::get_color() const{
+Vec4 Tetrimino::get_color() const{
 	return this->color;
 }
 
-unsigned char *Shape::get_shape() const{
+unsigned char *Tetrimino::get_tetrimino() const{
 	return this->states[current_state];
 }
 
-int Shape::get_num_state() const{
+int Tetrimino::get_num_state() const{
 	return this->num_state;
 }
 
-void Shape::change_state(int n){
+void Tetrimino::change_state(int n){
 	this->current_state += n;
 	this->current_state %= this->num_state;
 	if(this->current_state < 0)
 		this->current_state += this->num_state;
 }
 
-unsigned char **Shape::get_states() const{
+unsigned char **Tetrimino::get_states() const{
 	return this->states;
 }
 
-int Shape::get_current_state() const{
+int Tetrimino::get_current_state() const{
 	return this->current_state;
 }
 
-void Shape::print(int state_num){
+void Tetrimino::print(int state_num){
 	int i = 0;
 	int j = 0;
 	while(i < this->height){
@@ -109,7 +109,7 @@ void Shape::print(int state_num){
 		i++;
 	}
 }
-void Shape::print(){
+void Tetrimino::print(){
 	int i = 0;
 	while(i < this->num_state){
 		this->print(i);
@@ -118,8 +118,8 @@ void Shape::print(){
 	}
 }
 
-Shape *Shape::load_shape(const char *filename){
-	Shape *shapes;
+Tetrimino *Tetrimino::load_tetrimino(const char *filename){
+	Tetrimino *tetriminos;
 	char ch;
 	unsigned char **states;
 	int w, h, r, g, b, a;
@@ -131,7 +131,7 @@ Shape *Shape::load_shape(const char *filename){
 	int n;
 	infile >> n;
 	
-	shapes = new Shape[n];
+	tetriminos = new Tetrimino[n];
 	int i = 0, j = 0, k = 0, m = 0;
 	while(i < n){
 		infile >> ch >> num_state >> h >> w;
@@ -152,11 +152,11 @@ Shape *Shape::load_shape(const char *filename){
 		}
 		infile >> r >> g >> b;
 		col.set(r, g, b, 1);
-		Shape shp(ch, states, w, h, col, num_state);
-		shapes[i] = shp;
-		shp.free();
+		Tetrimino tetrimino(ch, states, w, h, col, num_state);
+		tetriminos[i] = tetrimino;
+		tetrimino.free();
 		++i;
 	}
 	infile.close();
-	return shapes;
+	return tetriminos;
 }

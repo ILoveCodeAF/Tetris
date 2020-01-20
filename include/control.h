@@ -1,9 +1,9 @@
 #ifndef __CONTROL_H_INCLUDED__
 #define __CONTROL_H_INCLUDED__
 
-#include "shape.h"
-#include "board.h"
-#include "queue.h"
+//#include "shape.h"
+//#include "board.h"
+//#include "queue.h"
 
 //enum class ControlKey{
 //	LEFT,
