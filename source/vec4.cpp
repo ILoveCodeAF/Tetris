@@ -71,6 +71,13 @@ float Vec4::geta() const{
 	return this->a;
 }
 
+bool operator==(const Vec4 &vec1, const Vec4 &vec2){
+	return (vec1.getr() == vec2.getr()) 
+		&& (vec1.getg() == vec2.getg())
+		&& (vec1.getb() == vec2.getb())
+		&& (vec1.geta() == vec2.geta());
+}
+
 std::ostream& operator<<(std::ostream& out, const Vec4 &vec4){
 	out<<"vec4 : (r="<<vec4.getr();
 	out<<", g="<<vec4.getg();
