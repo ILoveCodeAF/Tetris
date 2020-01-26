@@ -1,17 +1,14 @@
 #include "tetrimino.h"
 #include "vec4.h"
+#include "board.h"
 #include <iostream>
 
 int main(){
 	//
 	//Tetrimino* shps = Tetrimino::load_tetrimino("data/tetriminos.txt");
-	unsigned char **state = new unsigned char*[1];
-	state[0] = new unsigned char[12];
-	Vec4 vec4(1, 1, 0, 1);
-	Vec4 vec;
-	vec = vec4;
-	std::cout<<vec<<std::endl;
-	Tetrimino sh('t', state, 3, 4, vec4, 1);
+	Vec4 **state = new Vec4*[1];
+	state[0] = new Vec4[12];
+	Tetrimino sh('t', state, 3, 4, 1);
 	sh.print();
 
 	Tetrimino* shps = Tetrimino::load_tetrimino("data/tetriminos.txt");
@@ -20,5 +17,17 @@ int main(){
 		std::cout<<"----------------\n";
 		shps[i].print();
 	}
-	return 0;
+	Board board;
+	Tetrimino t = shps[0];
+	std::cout<<"------ ^ ^-----------\n";
+	t.print();
+	board.add(shps[0], 2, 5);
+	board.print();
+	t = shps[1];
+	t.print();
+	std::cout<<"-------delete--------\n";
+	delete[] shps;
+	std::cout<<"-------return-------\n";
+	return 0;std::cout<<"-------return-------\n";
+
 }
