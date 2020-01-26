@@ -2,7 +2,9 @@
 #include <iostream>
 #include <fstream>
 
-Tetrimino::Tetrimino(){}
+Tetrimino::Tetrimino(){
+	this->free();
+}
 
 Tetrimino::Tetrimino(char ch, Vec4 **states, int w, int h, int num_state){
 	this->character = ch;
@@ -13,38 +15,71 @@ Tetrimino::Tetrimino(char ch, Vec4 **states, int w, int h, int num_state){
 	this->current_state = 0;
 }
 
+Tetrimino::Tetrimino(const Tetrimino &tetrimino){
+	this->character = tetrimino.character;
+	this->width = tetrimino.width;
+	this->height = tetrimino.height;
+	this->num_state = tetrimino.num_state;
+	this->current_state = tetrimino.current_state;
+	
+	this->states = new Vec4*[this->num_state];
+	for(int i = 0; i < this->num_state; ++i){
+		this->states[i] = new Vec4[this->width*this->height];
+		for(int j = 0; j < this->width*this->height; ++j)
+			this->states[i][j] = tetrimino.states[i][j];
+	}
+}
+
+void Tetrimino::_copy(const Tetrimino &tetrimino){
+	if (this->num_state != tetrimino.num_state 
+			|| this->width*this->height != 
+			tetrimino.width*tetrimino.height){
+		std::cout<<"------hello------";
+		this->~Tetrimino();//call destructor;
+		this->states = new Vec4*[tetrimino.num_state];
+		for(int i = 0; i < tetrimino.num_state; ++i){
+			this->states[i] = 
+				new Vec4[tetrimino.width*tetrimino.height];
+		}
+	}
+	this->character = tetrimino.character;
+	this->current_state = tetrimino.current_state;
+
+	this->num_state = tetrimino.num_state;
+	this->width = tetrimino.width;
+	this->height = tetrimino.height;
+	for(int i = 0; i < this->num_state; ++i){
+		for(int j = 0; j < this->width*this->height; ++j)
+			this->states[i][j] = tetrimino.states[i][j];
+	}
+}
+
 Tetrimino& Tetrimino::operator=(const Tetrimino &tetrimino){
 	if (this == &tetrimino)
 		return *this;
-	this->character = tetrimino.get_character();
-	this->states = tetrimino.get_states();
-	this->width = tetrimino.get_width();
-	this->height = tetrimino.get_height();
-	this->num_state = tetrimino.get_num_state();
-	this->current_state = tetrimino.get_current_state();
+	
+	this->_copy(tetrimino);	
 	return *this;
 }
 
 Tetrimino& Tetrimino::operator=(const Tetrimino &&tetrimino){
+	std::cout<<"-------=&& called---------";
 	if (this == &tetrimino)
 		return *this;
-	this->character = tetrimino.get_character();
-	this->states = tetrimino.get_states();
-	this->width = tetrimino.get_width();
-	this->height = tetrimino.get_height();
-	this->num_state = tetrimino.get_num_state();
-	this->current_state = tetrimino.get_current_state();
+	
+	this->_copy(tetrimino);
 	return *this;
 }
 
 Tetrimino::~Tetrimino(){
 	if(this->states != NULL){
-		for(int i = this->num_state-1; i > 0; ++i){
+		for(int i = this->num_state-1; i > 0; --i){
 			if (this->states[i] != NULL)
 				delete[] this->states[i];
 		}
 		delete[] this->states;
 	}
+	this->free();
 }
 
 void Tetrimino::free(){
@@ -89,7 +124,7 @@ int Tetrimino::get_current_state() const{
 	return this->current_state;
 }
 
-void Tetrimino::print(int state_num){
+void Tetrimino::print(int state_num) const{
 	int i = 0;
 	int j = 0;
 	Vec4 vec;
@@ -107,7 +142,7 @@ void Tetrimino::print(int state_num){
 		i++;
 	}
 }
-void Tetrimino::print(){
+void Tetrimino::print() const{
 	int i = 0;
 	while(i < this->num_state){
 		this->print(i);
