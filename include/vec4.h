@@ -24,7 +24,8 @@ class Vec4{
 		float geta() const;
 };
 
-bool operator==(const Vec4 &vec1, const Vec4 &vec2);
+bool operator== (const Vec4 &vec1, const Vec4 &vec2);
+bool operator!= (const Vec4 &vec1, const Vec4 &vec2);
 std::ostream &operator<<(std::ostream &out, const Vec4 &vec);
 
 #endif

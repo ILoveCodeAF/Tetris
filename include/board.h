@@ -1,31 +1,27 @@
 #ifndef __BOARD_H_INCLUDED__
 #define __BOARD_H_INCLUDED__
 
-//#include "vec3.h"
-//#include "shape.h"
+#include <array>
+#include "vec4.h"
+#include "tetrimino.h"
 
-//struct Cell{
-//	Vec3 color;
-//	bool has_brick;
-//	Cell();
-//};
-//
-//class Board{
-//	private:
-//		int height;
-//		int width;
-//		Cell* board;
-//		bool is_full;
-//	public:
-//		Board();
-//		~Board();
-//		Cell* get_board();
-//		int get_height();
-//		int get_width();
-//		void add(Shape shape, int xpos, int ypos);
-//		void print();
-//		bool full();
-//		Cell get_cell(int i, int j);
-//};
+#define FIELD_HEIGHT 22
+#define FIELD_WIDTH 10
+
+class Board{
+	private:
+		int width, height;
+		std::array<std::array<Vec4, FIELD_WIDTH>, FIELD_HEIGHT> playfield;
+	public:
+		Board();
+		~Board();
+		std::array<std::array<Vec4, FIELD_WIDTH>, FIELD_HEIGHT> get_playfield() const;
+		int get_height() const;
+		int get_width() const;
+		void add(Tetrimino tetrimino, int xpos, int ypos);
+		void print() const;
+		bool full();
+		Vec4 get_cell(int i, int j) const;
+};
 
 #endif

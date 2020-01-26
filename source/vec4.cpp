@@ -78,6 +78,10 @@ bool operator==(const Vec4 &vec1, const Vec4 &vec2){
 		&& (vec1.geta() == vec2.geta());
 }
 
+bool operator!=(const Vec4 &vec1, const Vec4 &vec2){
+	return !(vec1 == vec2);
+}
+
 std::ostream& operator<<(std::ostream& out, const Vec4 &vec4){
 	out<<"vec4 : (r="<<vec4.getr();
 	out<<", g="<<vec4.getg();
