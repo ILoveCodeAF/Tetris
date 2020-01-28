@@ -6,14 +6,15 @@ MKDIR := mkdir -p
 
 INCLUDE_DIR := include
 SRC_DIR := source
-DEP_DIR := .deps
-OBJ_DIR := .obj
+DEP_DIR := .depend
+OBJ_DIR := .object
 
 SRCS := $(wildcard $(SRC_DIR)/*.cpp)
 OBJS := $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o,$(SRCS))
 DEPS := $(patsubst $(SRC_DIR)/%.cpp, $(DEP_DIR)/%.d,$(SRCS))
 
 CFLAGS := -Wall -I$(INCLUDE_DIR)
+LDLIBS := -lGL -lGLEW -lglfw
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEP_DIR)/$*.Td
 POSTCOMPILE = mv -f $(DEP_DIR)/$*.Td $(DEP_DIR)/$*.d
 
@@ -27,11 +28,11 @@ option:
 	@echo "compiling..."
 
 $(TARGET): $(OBJS)
-	$(CXX) -o $@ $(CFLAGS) $(OBJS)
+	$(CXX) -o $@ $(CFLAGS) $(LDLIBS) $(OBJS)
 
 # $@= target_name; $< first_dependency
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(DEP_DIR)/%.d | $(DEP_DIR) $(OBJ_DIR)
-	$(CXX) -o $@ $(DEPFLAGS) $(CFLAGS) -c $<
+	$(CXX) -o $@ $(DEPFLAGS) $(CFLAGS) $(LDLIBS) -c $<
 	$(POSTCOMPILE)
 
 $(OBJ_DIR):
